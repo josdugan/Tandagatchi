@@ -32,14 +32,14 @@ public class UserController {
         Address address = new Address(email);
         try {
 
+            user.setAddress(address);
 
-            addressRepository.save(address);
             userRepository.save(user);
         }
         catch (Exception ex) {
             return "Error creating the user: " + ex.toString();
         }
-        return "zipcode.tandagotchi.Models.User succesfully created with id = " + user + "\n" + address;
+        return "zipcode.tandagotchi.Models.User succesfully created with id = " + user + "\n" + user.getAddress();
     }
 
     /**

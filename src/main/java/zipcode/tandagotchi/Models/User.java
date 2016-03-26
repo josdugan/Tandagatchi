@@ -1,7 +1,12 @@
 package zipcode.tandagotchi.Models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by lucky on 3/14/16.
@@ -12,9 +17,10 @@ import javax.validation.constraints.NotNull;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    //@Column(name = "user_id", nullable = false)
-    private long id;
+//    @GenericGenerator(name="autoGen" ,strategy="increment")
+    @GeneratedValue(strategy=GenerationType.AUTO)//"autoGen")
+//    @Column(name="user_id")
+    private long userId;
 
     @NotNull
     String first_name;
@@ -22,19 +28,31 @@ public class User {
     String last_name;
     @NotNull
     String email;
+    @OneToOne(fetch = FetchType.LAZY,mappedBy="user", cascade = CascadeType.ALL)
+    private Address address;
 
-    public User(){
+
+    public User() {
 
     }
 
-    public User(long id){
-        this.id = id;
+    public User(long id) {
+        this.userId = id;
     }
 
-    public User(String firstName, String lastName, String email){
+    public User(String firstName, String lastName, String email) {
         this.first_name = firstName;
         this.last_name = lastName;
         this.email = email;
+    }
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getfirst_name() {
@@ -42,11 +60,11 @@ public class User {
     }
 
     public long getId() {
-        return id;
+        return userId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public void setfirst_name(String first_name) {
@@ -89,7 +107,7 @@ public class User {
     @Override
     public String toString() {
         return "zipcode.tandagotchi.Models.User{" +
-                "id=" + id +
+                "id=" + userId +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", email='" + email + '\'' +

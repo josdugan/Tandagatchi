@@ -1,24 +1,41 @@
 package zipcode.tandagotchi.Models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
  * Created by lucky on 3/15/16.
  */
+//@NamedNativeQueries({ @NamedNativeQuery(name = "addressQuery", query = "from Address", resultClass = Address.class) })
+
+
 @Entity
 @Table(name = "addresses")
 public class Address{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+//    @GenericGenerator(name="autoGen" ,strategy="increment")
+    @GeneratedValue(strategy = GenerationType.AUTO)//generator="autoGen")
+//    @Column(name="address_id")
+    private Long addressId;
     String street_number;
 
     String street_name;
     String state;
     String city;
     String zip;
+//    @JoinColumn(name = "user_id", updatable = false, insertable = false)
+    @OneToOne//(cascade = CascadeType.ALL)//,fetch = FetchType.LAZY)
+    User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Address(){
 
@@ -33,11 +50,11 @@ public class Address{
     }
 
     public long getId() {
-        return id;
+        return addressId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.addressId = id;
     }
 
     public String getStreet_name() {
@@ -83,7 +100,7 @@ public class Address{
     @Override
     public String toString() {
         return "zipcode.tandagotchi.Models.Address{" +
-                "id=" + id +
+                "id=" + addressId +
                 ", street_number='" + street_number + '\'' +
                 ", street_name='" + street_name + '\'' +
                 ", state='" + state + '\'' +
